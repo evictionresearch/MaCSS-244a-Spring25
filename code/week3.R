@@ -1,15 +1,17 @@
+# [qs->parquet migration] read_data()/write_data() — see library/code/io_helpers.R
 # -----------------------------------------------------------------------------
 # Before we start, we need to install and load the necessary packages for this
 # exercise.
 install.packages("lubridate") # for handling dates
 install.packages("janitor") # for cleaning names
-install.packages("qs") # for reading qs files
+# install.packages("qs") # for reading qs files   # [qs deprecated]
 
 library(tidyverse)  # Load the tidyverse package
 library(tidycensus)  # Load the tidycensus package
 library(lubridate) # for handling dates
 library(janitor) # for cleaning names
-library(qs) # for reading qs files
+# for reading qs files
+if (!exists("read_data")) for (.p in c("~/git/evictionresearch/library/code/io_helpers.R","~/users/timthomas/git/evictionresearch/library/code/io_helpers.R","/accounts/projects/timthomas/git/evictionresearch/library/code/io_helpers.R")) if (file.exists(.p)) { source(.p); break }
 
 # ==========================================================================
 # Over the past couple weeks, we've been working with tidycensus to get data
@@ -18,7 +20,7 @@ library(qs) # for reading qs files
 # Berkeley and link it to census conditions.
 # ==========================================================================
 
-indiana_evictions <- qread("~/git/evictionresearch/MaCSS-244a-Spring25/data/evictions/d5_case_aggregated.qs")
+indiana_evictions <- read_data("~/git/evictionresearch/MaCSS-244a-Spring25/data/evictions/d5_case_aggregated.qs")
 
 glimpse(indiana_evictions)
 
@@ -93,7 +95,7 @@ pivot_wider(
 )
 
 co_census
-qsave(co_census, "~/git/evictionresearch/MaCSS-244a-Spring25/data/census/in_co_renters.qs")
+write_data(co_census, "~/git/evictionresearch/MaCSS-244a-Spring25/data/census/in_co_renters.qs")
 # Now lets merge the census data to the eviction rates
 in_rates <- in_rates %>%
   left_join(co_census, by = c("county_geoid" = "GEOID"))

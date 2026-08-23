@@ -1,3 +1,4 @@
+# [qs->parquet migration] read_data()/write_data() — see library/code/io_helpers.R
 # =============================================================================
 # Week 4 R In Class Exercise: Mapping displacement
 # Today we're going to go beyond plots and map some of our displacement data
@@ -429,8 +430,8 @@ tm_shape(li_sf3) +
 # =============================================================================
 
 # Let's pull in our eviction data from last week into this map. Let's say we want to look at one year of eviction data.
-librarian::shelf(qs)
-indiana_evictions <- qread("~/git/evictionresearch/MaCSS-244a-Spring25/data/evictions/d5_case_aggregated.qs")
+if (!exists("read_data")) for (.p in c("~/git/evictionresearch/library/code/io_helpers.R","~/users/timthomas/git/evictionresearch/library/code/io_helpers.R","/accounts/projects/timthomas/git/evictionresearch/library/code/io_helpers.R")) if (file.exists(.p)) { source(.p); break }
+indiana_evictions <- read_data("~/git/evictionresearch/MaCSS-244a-Spring25/data/evictions/d5_case_aggregated.qs")
 
 # Which years seem to have complete data?
 indiana_evictions %>%
